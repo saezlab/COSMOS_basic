@@ -16,7 +16,7 @@ load("data/cosmos/cosmos_inputs.RData")
 
 names(cosmos_inputs)
 
-cell_line <- "786-0"
+cell_line <- "MCF7"
 
 sig_input <- cosmos_inputs[[cell_line]]$TF_scores
 metab_input <- cosmos_inputs[[cell_line]]$metabolomic
@@ -95,6 +95,9 @@ moon_res <- decompress_moon_result(moon_res, meta_network_compressed_list, meta_
 plot(density(moon_res$score))
 abline(v = 1)
 abline(v = -1)
+
+moon_res <- moon_res[,c(4,2,3)]
+names(moon_res)[1] <- "source"
 
 solution_network <- reduce_solution_network(decoupleRnival_res = moon_res, 
                                             meta_network = meta_network,
