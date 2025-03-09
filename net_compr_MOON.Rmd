@@ -53,7 +53,19 @@ sig_input <- sig_input[abs(sig_input) > 2]
 
 ```{r Filter inputs and prior knowledge network}
 #Remove genes that are not expressed from the meta_network
-meta_network <- cosmosR:::filter_pkn_expressed_genes(names(RNA_input), meta_pkn = meta_network)
+start.time <- Sys.time()
+meta_network_old <- cosmosR:::filter_pkn_expressed_genes(names(RNA_input), meta_pkn = meta_network)
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+
+start.time <- Sys.time()
+meta_network <- filter_pkn_expressed_genes_2(names(RNA_input), meta_pkn = meta_network)
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+
+identical(meta_network_old, meta_network)
 
 #Filter inputs and prune the meta_network to only keep nodes that can be found downstream of the inputs
 #The number of step is quite flexible, 7 steps already covers most of the network
