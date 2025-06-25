@@ -16,7 +16,7 @@ load("data/cosmos/cosmos_inputs.RData")
 
 names(cosmos_inputs)
 
-cell_line <- "MCF7"
+cell_line <- "SW-620"
 
 sig_input <- cosmos_inputs[[cell_line]]$TF_scores
 metab_input <- cosmos_inputs[[cell_line]]$metabolomic
@@ -99,12 +99,17 @@ abline(v = -1)
 moon_res <- moon_res[,c(4,2,3)]
 names(moon_res)[1] <- "source"
 
-solution_network <- reduce_solution_network(decoupleRnival_res = moon_res, 
+#for single threshold
+solution_network <- reduce_solution_network(decoupleRnival_res = moon_res,
                                             meta_network = meta_network,
-                                            cutoff = 0.5, 
-                                            upstream_input = sig_input, 
-                                            RNA_input = RNA_input, 
+                                            cutoff = 0.5,
+                                            upstream_input = sig_input,
+                                            RNA_input = RNA_input,
                                             n_steps = n_steps)
+
+#for double threshold
+# solution_network <- reduce_solution_network_double_thresh(decoupleRnival_res = moon_res, 
+#                                             meta_network = meta_network, primary_thresh = 1, secondary_thresh = 1, upstream_input = sig_input, RNA_input = RNA_input)
 
 SIF <- solution_network$SIF
 names(SIF)[3] <- "sign"
@@ -119,13 +124,3 @@ ATT <- translated_res[[2]]
 
 write_csv(SIF, file = paste("results/",paste(cell_line, "_dec_compressed_SIF.csv",sep = ""), sep = ""))
 write_csv(ATT, file = paste("results/",paste(cell_line, "_dec_compressed_ATT.csv",sep = ""), sep = ""))
-
-
-# X7860_ATT_decouplerino_full <- as.data.frame(read_csv("results/moon/7860_ATT_decouplerino_full.csv"))
-# 
-# temp <- merge(moon_res, X7860_ATT_decouplerino_full, by = "source")
-# 
-# plot(temp$score.x, temp$score.y)
-# 
-# temp$diff <- abs(temp$score.y - temp$score.x)
-# temp <- temp[order(temp$diff, decreasing = T),]
