@@ -1,12 +1,13 @@
 # We advise to instal from github to get the latest version of the tool.
-# if (!requireNamespace("devtools", quietly = TRUE))
-#   install.packages("devtools")
-# 
-# devtools::install_github("saezlab/cosmosR")
+if (!requireNamespace("devtools", quietly = TRUE))
+  install.packages("devtools")
+
+devtools::install_github("saezlab/cosmosR")
 
 library(cosmosR)
 library(reshape2)
 library(readr)
+library(igraph)
 
 data("meta_network")
 
@@ -32,7 +33,7 @@ sig_input <- sig_input[abs(sig_input) > 2]
 #make sure the sig_input is a named vector
 
 #Remove genes that are not expressed from the meta_network
-meta_network <- cosmosR:::filter_pkn_expressed_genes(names(RNA_input), meta_pkn = meta_network)
+meta_network <- cosmosR:::filter_pkn_expressed_genes_fast(names(RNA_input), meta_pkn = meta_network)
 
 #Filter inputs and prune the meta_network to only keep nodes that can be found downstream of the inputs
 #The number of step is quite flexible, 7 steps already covers most of the network
@@ -40,12 +41,18 @@ meta_network <- cosmosR:::filter_pkn_expressed_genes(names(RNA_input), meta_pkn 
 n_steps <- 6
 
 # in this step we prune the network to keep only the relevant part between upstream and downstream nodes
-sig_input <- cosmosR:::filter_input_nodes_not_in_pkn(sig_input, meta_network)
-meta_network <- cosmosR:::keep_controllable_neighbours(meta_network, n_steps, names(sig_input))
-metab_input <- cosmosR:::filter_input_nodes_not_in_pkn(metab_input, meta_network)
-meta_network <- cosmosR:::keep_observable_neighbours(meta_network, n_steps, names(metab_input))
-sig_input <- cosmosR:::filter_input_nodes_not_in_pkn(sig_input, meta_network)
+before_l <- c(length(sig_input),length(metab_input))
+after_l <- 0
 
+while(sum(before_l == after_l) != 2)
+{
+  before_l <- c(length(sig_input),length(metab_input))
+  sig_input <- cosmosR:::filter_input_nodes_not_in_pkn(sig_input, meta_network)
+  meta_network <- cosmosR:::keep_controllable_neighbours(meta_network, n_steps, names(sig_input))
+  metab_input <- cosmosR:::filter_input_nodes_not_in_pkn(metab_input, meta_network)
+  meta_network <- cosmosR:::keep_observable_neighbours(meta_network, n_steps, names(metab_input))
+  after_l <- c(length(sig_input),length(metab_input))
+}
 
 #compress the network
 meta_network_compressed_list <- compress_same_children(meta_network, sig_input = sig_input, metab_input = metab_input)
@@ -58,7 +65,7 @@ duplicated_parents <- meta_network_compressed_list$duplicated_signatures
 
 meta_network_compressed <- meta_network_cleanup(meta_network_compressed)
 
-load("support/dorothea_reg.RData")
+load("support/collectri_regulon_R.RData")
 
 meta_network_TF_to_metab <- meta_network_compressed
 
@@ -73,7 +80,7 @@ while (before != after & i < 10) {
                                                  n_layers = n_steps, 
                                                  statistic = "ulm") 
   
-  meta_network_TF_to_metab <- filter_incohrent_TF_target(moon_res, dorothea_reg, meta_network_TF_to_metab, RNA_input)
+  meta_network_TF_to_metab <- filter_incohrent_TF_target(moon_res, regulons, meta_network_TF_to_metab, RNA_input)
   after <- length(meta_network_TF_to_metab[,1])
   i <- i + 1
 }
@@ -87,9 +94,9 @@ if(i < 10)
 }
 
 #####
-write_csv(moon_res, file = paste("results/moon/",paste(cell_line, "_ATT_decouplerino_full.csv",sep = ""), sep = ""))
+write_csv(moon_res, file = paste("results/moon/",paste(cell_line, "_ATT_moon_full.csv",sep = ""), sep = ""))
 
-source("scripts/support_decompression.R")
+# source("scripts/support_decompression.R")
 moon_res <- decompress_moon_result(moon_res, meta_network_compressed_list, meta_network_TF_to_metab)
 
 plot(density(moon_res$score))
@@ -108,7 +115,7 @@ solution_network <- reduce_solution_network(decoupleRnival_res = moon_res,
                                             n_steps = n_steps)
 
 #for double threshold
-# solution_network <- reduce_solution_network_double_thresh(decoupleRnival_res = moon_res, 
+# solution_network <- reduce_solution_network_double_thresh(decoupleRnival_res = moon_res,
 #                                             meta_network = meta_network, primary_thresh = 1, secondary_thresh = 1, upstream_input = sig_input, RNA_input = RNA_input)
 
 SIF <- solution_network$SIF

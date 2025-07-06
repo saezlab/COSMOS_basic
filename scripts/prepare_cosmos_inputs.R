@@ -34,16 +34,15 @@ means <- rowMeans(RNA_log2_FPKM_cleaned_common, na.rm = T)
 
 RNA_scaled <- (RNA_log2_FPKM_cleaned_common - means) / SDs
 
-
-
-doro_regulons <- get_dorothea(levels = c("A","B"))
+#https://decoupler.readthedocs.io/en/latest/notebooks/bulk/rna.html TO GET COLLECTRI REGULON (IN PYTHON)
+load("support/collectri_regulon_R.RData")
 
 ## This is were TF activities are estiamted from transcriptomic data, see https://github.com/saezlab/decoupler for more info
 TF_activities <- apply(RNA_scaled,2,function(x){
                         x <- as.data.frame(x[which(!is.na(x))])
-                        TFs <- run_wmean(as.matrix(x), network = doro_regulons, times = 1000, minsize = 20)
+                        TFs <- run_ulm(as.matrix(x), network = regulons, minsize = 20)
                         TFs <- as.data.frame(TFs)
-                        TFs <- TFs[which(TFs$statistic == "norm_wmean"),c(2,4)]
+                        TFs <- TFs[,c(2,4)]
                         as_input <- TFs[,2]
                         names(as_input) <- TFs[,1]
                         return(as_input)
