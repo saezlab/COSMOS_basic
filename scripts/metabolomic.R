@@ -5,7 +5,7 @@ library(vsn)
 library(metaboliteIDmapping)
 
 # --- Load and filter raw metabolomics data ------------------------------------
-
+# from: https://wiki.nci.nih.gov/download/attachments/155845004/WEB_DATA_METABOLON_ALL.ZIP?version=1&modificationDate=1378213863000&api=v2
 metabs_raw <- as.data.frame(read_csv("data/metabolomic/WEB_DATA_METABOLON.TXT"))
 
 # Remove ambiguous identifications

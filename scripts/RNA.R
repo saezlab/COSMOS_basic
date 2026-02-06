@@ -1,40 +1,32 @@
+library(readxl)
 library(readr)
 
-# --- Load RNA expression data ------------------------------------------------
+# --- Load RNA expression data from raw Excel file ----------------------------
 
+# Source: NCI60 RNA-seq composite expression from CellMiner
+# log2(FPKM + 1) values
+# https://discover.nci.nih.gov/cellminer/datasets.do
 rna_raw <- as.data.frame(
-  read_delim("data/RNA/RNA_log2_FPKM.csv",
-             delim = ";", escape_double = FALSE, trim_ws = TRUE))
+  read_excel("data/RNA/RNA__RNA_seq_composite_expression.xls",
+             skip = 10, sheet = 1))
 
 # Drop annotation columns (keep only gene name + expression values)
 rna_raw <- rna_raw[, -c(2:6)]
 
-# Strip prefix from column headers (e.g. "prefix:cellline" -> "cellline")
-names(rna_raw) <- gsub(".*[:]", "", names(rna_raw))
-
-# Remove rows with any missing values
-rna_raw <- rna_raw[complete.cases(rna_raw), ]
-
 # Set gene names as row names and remove the gene name column
-row.names(rna_raw) <- rna_raw$`Gene name d`
+row.names(rna_raw) <- rna_raw[[1]]
 rna_raw <- rna_raw[, -1]
 
-# Fix decimal separator (European locale uses comma instead of dot)
-rna_raw <- as.data.frame(apply(rna_raw, 2, function(x) gsub(",", ".", x)))
+# Strip prefix from column headers (e.g. "BR:MCF7" -> "MCF7")
+names(rna_raw) <- gsub(".*[:]", "", names(rna_raw))
 
 # --- Filter lowly expressed genes ---------------------------------------------
 
-hist(as.numeric(unlist(rna_raw)), breaks = 1000)
-
 # Set values below threshold to NA (log2 FPKM < 1 considered not expressed)
 rna_raw[rna_raw < 1] <- NA
-hist(as.numeric(unlist(rna_raw)), breaks = 1000)
 
-# Keep genes expressed in at least ~20% of cell lines (56 - 45 = 11)
-n_cell_lines <- ncol(rna_raw)
-max_missing <- n_cell_lines - 11
-rna_filtered <- rna_raw[rowSums(is.na(rna_raw)) < max_missing, ]
-hist(as.numeric(unlist(rna_filtered)), breaks = 1000)
+# Keep genes expressed in at least 11 cell lines
+rna_filtered <- rna_raw[rowSums(is.na(rna_raw)) < 45, ]
 
 # --- Align cell lines with metabolomics data ----------------------------------
 

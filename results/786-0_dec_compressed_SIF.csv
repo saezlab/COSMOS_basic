@@ -1,0 +1,7 @@
+source,target,sign
+AKR1B1,Enzyme1338__AKR1B1,1
+ATF1,JUN,1
+Enzyme1338__AKR1B1,Metab__D-Glucitol_c,1
+JUN,NFAT5,1
+NFAT5,AKR1B1,1
+SMAD3,JUN,1

@@ -4,130 +4,161 @@ if (!requireNamespace("devtools", quietly = TRUE))
 
 devtools::install_github("saezlab/cosmosR")
 
+
 library(cosmosR)
 library(reshape2)
 library(readr)
 library(igraph)
 
+# --- Load prior knowledge network (PKN) --------------------------------------
+
 data("meta_network")
 
 meta_network <- meta_network_cleanup(meta_network)
+
+# --- Load pre-processed cell line data ----------------------------------------
 
 load("data/cosmos/cosmos_inputs.RData")
 
 names(cosmos_inputs)
 
-cell_line <- "SW-620"
+cell_line <- "786-0"
 
-sig_input <- cosmos_inputs[[cell_line]]$TF_scores
+tf_input    <- cosmos_inputs[[cell_line]]$TF_scores
 metab_input <- cosmos_inputs[[cell_line]]$metabolomic
-RNA_input <- cosmos_inputs[[cell_line]]$RNA
+rna_input   <- cosmos_inputs[[cell_line]]$RNA
 
-#Choose which compartment to assign to the metabolic measurments
-metab_input <- prepare_metab_inputs(metab_input, c("c","m"))
+# --- Prepare MOON inputs ------------------------------------------------------
 
-##Filter significant inputs
-sig_input <- sig_input[abs(sig_input) > 2]
-# metab_input <- metab_input[abs(metab_input) > 2]
+# Assign metabolites to cellular compartments (c = cytosol, m = mitochondria)
+metab_input <- prepare_metab_inputs(metab_input, c("c", "m"))
 
-#make sure the sig_input is a named vector
+# Keep only TFs with significant activity (|t-value| > 2)
+tf_input <- tf_input[abs(tf_input) > 2]
 
-#Remove genes that are not expressed from the meta_network
-meta_network <- cosmosR:::filter_pkn_expressed_genes_fast(names(RNA_input), meta_pkn = meta_network)
+# Remove genes not expressed in this cell line from the PKN
+meta_network <- cosmosR:::filter_pkn_expressed_genes_fast(
+  names(rna_input), meta_pkn = meta_network)
 
-#Filter inputs and prune the meta_network to only keep nodes that can be found downstream of the inputs
-#The number of step is quite flexible, 7 steps already covers most of the network
+# --- Prune PKN to reachable subnetwork ----------------------------------------
+
+# Iteratively remove:
+#   - input nodes not present in the PKN
+#   - PKN nodes not reachable from upstream inputs within n_steps (controllable)
+#   - PKN nodes that cannot reach downstream inputs within n_steps (observable)
+# Repeat until no more nodes are removed.
 
 n_steps <- 6
 
-# in this step we prune the network to keep only the relevant part between upstream and downstream nodes
-before_l <- c(length(sig_input),length(metab_input))
-after_l <- 0
+n_inputs_before <- c(length(tf_input), length(metab_input))
+n_inputs_after  <- 0
 
-while(sum(before_l == after_l) != 2)
-{
-  before_l <- c(length(sig_input),length(metab_input))
-  sig_input <- cosmosR:::filter_input_nodes_not_in_pkn(sig_input, meta_network)
-  meta_network <- cosmosR:::keep_controllable_neighbours(meta_network, n_steps, names(sig_input))
+while (sum(n_inputs_before == n_inputs_after) != 2) {
+  n_inputs_before <- c(length(tf_input), length(metab_input))
+  tf_input    <- cosmosR:::filter_input_nodes_not_in_pkn(tf_input, meta_network)
+  meta_network <- cosmosR:::keep_controllable_neighbours(meta_network, n_steps, names(tf_input))
   metab_input <- cosmosR:::filter_input_nodes_not_in_pkn(metab_input, meta_network)
   meta_network <- cosmosR:::keep_observable_neighbours(meta_network, n_steps, names(metab_input))
-  after_l <- c(length(sig_input),length(metab_input))
+  n_inputs_after <- c(length(tf_input), length(metab_input))
 }
 
-#compress the network
-meta_network_compressed_list <- compress_same_children(meta_network, sig_input = sig_input, metab_input = metab_input)
+# --- Compress redundant network paths -----------------------------------------
 
-meta_network_compressed <- meta_network_compressed_list$compressed_network
+# Merge parent nodes that share identical sets of children, reducing the
+# network size without losing information. This speeds up MOON scoring.
 
-node_signatures <- meta_network_compressed_list$node_signatures
+compressed <- compress_same_children(
+  meta_network, sig_input = tf_input, metab_input = metab_input)
 
-duplicated_parents <- meta_network_compressed_list$duplicated_signatures
+meta_network_compressed <- compressed$compressed_network
+node_signatures         <- compressed$node_signatures
+duplicated_parents      <- compressed$duplicated_signatures
 
 meta_network_compressed <- meta_network_cleanup(meta_network_compressed)
 
+# --- Run MOON scoring with TF-target coherence filtering ----------------------
+
+# MOON (Meta-fOOtprint aNalysis) iteratively scores network nodes layer by
+# layer using ULM (Univariate Linear Model), starting from the downstream
+# metabolomic measurements and propagating upstream toward TF activity scores.
+#
+# After each scoring round, TF-target interactions incoherent with RNA
+# expression data are removed from the network. The loop repeats until
+# convergence (no more edges removed).
+
 load("support/collectri_regulon_R.RData")
 
-meta_network_TF_to_metab <- meta_network_compressed
+moon_network <- meta_network_compressed
 
-before <- 1
-after <- 0
+n_edges_before <- 1
+n_edges_after  <- 0
 i <- 1
-while (before != after & i < 10) {
-  before <- length(meta_network_TF_to_metab[,1])
-  moon_res <- moon(upstream_input = sig_input, 
-                                                 downstream_input = metab_input, 
-                                                 meta_network = meta_network_TF_to_metab, 
-                                                 n_layers = n_steps, 
-                                                 statistic = "ulm") 
-  
-  meta_network_TF_to_metab <- filter_incohrent_TF_target(moon_res, regulons, meta_network_TF_to_metab, RNA_input)
-  after <- length(meta_network_TF_to_metab[,1])
+while (n_edges_before != n_edges_after & i < 10) {
+  n_edges_before <- nrow(moon_network)
+  moon_res <- moon(upstream_input = tf_input,
+                   downstream_input = metab_input,
+                   meta_network = moon_network,
+                   n_layers = n_steps,
+                   statistic = "ulm")
+
+  moon_network <- filter_incohrent_TF_target(
+    moon_res, regulons, moon_network, rna_input)
+  n_edges_after <- nrow(moon_network)
   i <- i + 1
 }
 
-if(i < 10)
-{
-  print(paste("Converged after ",paste(i-1," iterations", sep = ""),sep = ""))
-} else
-{
-  print(paste("Interupted after ",paste(i," iterations. Convergence uncertain.", sep = ""),sep = ""))
+if (i < 10) {
+  print(paste0("Converged after ", i - 1, " iterations"))
+} else {
+  print(paste0("Interrupted after ", i, " iterations. Convergence uncertain."))
 }
 
-#####
-write_csv(moon_res, file = paste("results/moon/",paste(cell_line, "_ATT_moon_full.csv",sep = ""), sep = ""))
+# --- Decompress and threshold MOON results ------------------------------------
 
-# source("scripts/support_decompression.R")
-moon_res <- decompress_moon_result(moon_res, meta_network_compressed_list, meta_network_TF_to_metab)
+# Save full (compressed) MOON scores for reference
+write_csv(moon_res,
+          file = paste0("results/moon/", cell_line, "_ATT_moon_full.csv"))
 
+# Expand compressed node groups back to individual nodes
+moon_res <- decompress_moon_result(moon_res, compressed, moon_network)
+
+# Inspect score distribution to inform cutoff choice
 plot(density(moon_res$score))
 abline(v = 1)
 abline(v = -1)
 
-moon_res <- moon_res[,c(4,2,3)]
+# Reorder columns to match expected format: source, score, level
+moon_res <- moon_res[, c(4, 2, 3)]
 names(moon_res)[1] <- "source"
 
-#for single threshold
-solution_network <- reduce_solution_network(decoupleRnival_res = moon_res,
-                                            meta_network = meta_network,
-                                            cutoff = 0.5,
-                                            upstream_input = sig_input,
-                                            RNA_input = RNA_input,
-                                            n_steps = n_steps)
+# --- Extract solution subnetwork ----------------------------------------------
 
-#for double threshold
-# solution_network <- reduce_solution_network_double_thresh(decoupleRnival_res = moon_res,
-#                                             meta_network = meta_network, primary_thresh = 1, secondary_thresh = 1, upstream_input = sig_input, RNA_input = RNA_input)
+# Extract solution subnetwork using a double threshold: nodes with scores above
+# the primary threshold (1.5) are selected first, then the subnetwork is
+# expanded to include neighboring nodes above the secondary threshold (0.5).
+
+solution_network <- reduce_solution_network_double_thresh(
+  decoupleRnival_res = moon_res,
+  meta_network = meta_network,
+  primary_thresh = 1.7,
+  secondary_thresh = 1,
+  upstream_input = tf_input,
+  RNA_input = rna_input)
 
 SIF <- solution_network$SIF
 names(SIF)[3] <- "sign"
 ATT <- solution_network$ATT
 
+# --- Translate metabolite IDs to human-readable names -------------------------
+
 data("HMDB_mapper_vec")
 
-translated_res <- translate_res(SIF,ATT,HMDB_mapper_vec)
+translated_res <- translate_res(SIF, ATT, HMDB_mapper_vec)
 
 SIF <- translated_res[[1]]
 ATT <- translated_res[[2]]
 
-write_csv(SIF, file = paste("results/",paste(cell_line, "_dec_compressed_SIF.csv",sep = ""), sep = ""))
-write_csv(ATT, file = paste("results/",paste(cell_line, "_dec_compressed_ATT.csv",sep = ""), sep = ""))
+# --- Write final results ------------------------------------------------------
+
+write_csv(SIF, file = paste0("results/", cell_line, "_dec_compressed_SIF.csv"))
+write_csv(ATT, file = paste0("results/", cell_line, "_dec_compressed_ATT.csv"))
