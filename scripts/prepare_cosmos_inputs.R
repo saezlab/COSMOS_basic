@@ -40,15 +40,15 @@ means <- rowMeans(rna_fpkm, na.rm = TRUE)
 
 rna_scaled <- (rna_fpkm - means) / sds
 
-# Estimate TF activities from scaled RNA using DoRothEA regulons
-# See https://github.com/saezlab/decoupler for details
-doro_regulons <- get_dorothea(levels = c("A", "B"))
+# Estimate TF activities from scaled RNA using CollecTRI regulons
+# https://decoupler.readthedocs.io/en/latest/notebooks/bulk/rna.html
+load("support/collectri_regulon_R.RData")
 
 tf_activities <- apply(rna_scaled, 2, function(x) {
   x <- as.data.frame(x[which(!is.na(x))])
-  tfs <- run_wmean(as.matrix(x), network = doro_regulons, times = 1000, minsize = 20)
+  tfs <- run_ulm(as.matrix(x), network = regulons, minsize = 20)
   tfs <- as.data.frame(tfs)
-  tfs <- tfs[which(tfs$statistic == "norm_wmean"), c(2, 4)]
+  tfs <- tfs[, c(2, 4)]
   result <- tfs[, 2]
   names(result) <- tfs[, 1]
   return(result)
