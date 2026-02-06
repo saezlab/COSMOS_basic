@@ -1,39 +1,56 @@
 library(readr)
 
-RNA_log2_FPKM <- as.data.frame(
-  read_delim("data/RNA/RNA_log2_FPKM.csv", 
-                            delim = ";", escape_double = FALSE, trim_ws = TRUE))
+# --- Load RNA expression data ------------------------------------------------
 
-RNA_log2_FPKM <- RNA_log2_FPKM[,-c(2:6)]
-names(RNA_log2_FPKM) <- gsub(".*[:]","",names(RNA_log2_FPKM))
+rna_raw <- as.data.frame(
+  read_delim("data/RNA/RNA_log2_FPKM.csv",
+             delim = ";", escape_double = FALSE, trim_ws = TRUE))
 
-RNA_log2_FPKM <- RNA_log2_FPKM[complete.cases(RNA_log2_FPKM),]
+# Drop annotation columns (keep only gene name + expression values)
+rna_raw <- rna_raw[, -c(2:6)]
 
-row.names(RNA_log2_FPKM) <- RNA_log2_FPKM$`Gene name d`
-RNA_log2_FPKM <- RNA_log2_FPKM[,-1]
-RNA_log2_FPKM <- apply(RNA_log2_FPKM,2,function(x){
-  gsub(",",".",x)
-}) 
-RNA_log2_FPKM <- as.data.frame(RNA_log2_FPKM)
+# Strip prefix from column headers (e.g. "prefix:cellline" -> "cellline")
+names(rna_raw) <- gsub(".*[:]", "", names(rna_raw))
 
-hist(as.numeric(unlist(RNA_log2_FPKM)), breaks = 1000) 
+# Remove rows with any missing values
+rna_raw <- rna_raw[complete.cases(rna_raw), ]
 
-RNA_log2_FPKM[RNA_log2_FPKM < 1] <- NA
-hist(as.numeric(unlist(RNA_log2_FPKM)), breaks = 1000) 
-RNA_log2_FPKM <- RNA_log2_FPKM[rowSums(is.na(RNA_log2_FPKM)) < 45,]
-# RNA_log2_FPKM <- RNA_log2_FPKM[rowSums(RNA_log2_FPKM == 0) < 45,]
-hist(as.numeric(unlist(RNA_log2_FPKM)), breaks = 1000) 
+# Set gene names as row names and remove the gene name column
+row.names(rna_raw) <- rna_raw$`Gene name d`
+rna_raw <- rna_raw[, -1]
 
-metabolomic_clean_vsn <- as.data.frame(read_csv("data/metabolomic/metabolomic_clean_vsn.csv"))
+# Fix decimal separator (European locale uses comma instead of dot)
+rna_raw <- as.data.frame(apply(rna_raw, 2, function(x) gsub(",", ".", x)))
 
-cell_lines <- intersect(names(metabolomic_clean_vsn[,-1]),names(RNA_log2_FPKM))
+# --- Filter lowly expressed genes ---------------------------------------------
 
-metabolomic_clean_vsn <- metabolomic_clean_vsn[,c("metabolite",cell_lines)]
+hist(as.numeric(unlist(rna_raw)), breaks = 1000)
 
-RNA_log2_FPKM <- RNA_log2_FPKM[,cell_lines]
-RNA_log2_FPKM$gene <- row.names(RNA_log2_FPKM)
+# Set values below threshold to NA (log2 FPKM < 1 considered not expressed)
+rna_raw[rna_raw < 1] <- NA
+hist(as.numeric(unlist(rna_raw)), breaks = 1000)
 
-RNA_log2_FPKM <- RNA_log2_FPKM[,c(57,1:56)]
+# Keep genes expressed in at least ~20% of cell lines (56 - 45 = 11)
+n_cell_lines <- ncol(rna_raw)
+max_missing <- n_cell_lines - 11
+rna_filtered <- rna_raw[rowSums(is.na(rna_raw)) < max_missing, ]
+hist(as.numeric(unlist(rna_filtered)), breaks = 1000)
 
-write_csv(RNA_log2_FPKM,file = "data/RNA/RNA_log2_FPKM_cleaned_common.csv")
-write_csv(metabolomic_clean_vsn, file = "data/metabolomic/metabolomic_clean_vsn_common.csv")
+# --- Align cell lines with metabolomics data ----------------------------------
+
+metabolomic_vsn <- as.data.frame(read_csv("data/metabolomic/metabolomic_clean_vsn.csv"))
+
+common_cell_lines <- intersect(names(metabolomic_vsn[, -1]), names(rna_filtered))
+
+metabolomic_vsn <- metabolomic_vsn[, c("metabolite", common_cell_lines)]
+
+rna_filtered <- rna_filtered[, common_cell_lines]
+rna_filtered$gene <- row.names(rna_filtered)
+
+# Reorder to put gene name column first
+rna_filtered <- rna_filtered[, c("gene", common_cell_lines)]
+
+# --- Write outputs ------------------------------------------------------------
+
+write_csv(rna_filtered, file = "data/RNA/RNA_log2_FPKM_cleaned_common.csv")
+write_csv(metabolomic_vsn, file = "data/metabolomic/metabolomic_clean_vsn_common.csv")
