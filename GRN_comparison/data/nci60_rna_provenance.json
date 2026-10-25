@@ -1,0 +1,12 @@
+{
+  "source": "data/RNA/RNA__RNA_seq_composite_expression.xls",
+  "source_sha256": "8344e5d8c600fb268ae8419c8b4959855f3158d655373a140ab52fd5a3e4166a",
+  "expression_sha256": "3cce40548fc18eb3727223b0885c7e3c727a8512a5c22b25abf5252704a62bca",
+  "sample_metadata_sha256": "2060d763f9132e83dbe0189b25f5c20b59808f0f3c8f773a80dbb0666cad066a",
+  "source_description": "Existing CellMiner NCI60 RNA-seq composite workbook; log2(FPKM + 1), as documented in scripts/RNA.R.",
+  "preparation": "First sheet, skip 10 header rows; retain original gene names and all expression values. No censoring, imputation, gene selection or sample split.",
+  "tissue_codes": "Original column prefixes, retained for stratification; bulk tissue labels are not single-cell identities.",
+  "n_genes": 23808,
+  "n_samples": 60,
+  "regeneration": "python GRN_comparison/prepare_nci60_rna.py (requires xlrd==2.0.2)"
+}

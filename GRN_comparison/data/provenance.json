@@ -1,0 +1,10 @@
+{
+  "description": "Text export of the local CollecTRI snapshot; no live database query.",
+  "generated_with": "Rscript GRN_comparison/export_collectri.R",
+  "source": "support/collectri_regulon_R.RData",
+  "source_md5": "b645f2fe66b2ec0fd323614e1ea09e32",
+  "export_md5": "2e5384f11131de531526fa5ab71e2ff6",
+  "rows": 43178,
+  "source_release": "Not recorded in the existing RData; do not assume latest release.",
+  "score": "Original mor annotation; not a confidence rank."
+}

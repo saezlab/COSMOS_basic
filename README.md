@@ -4,6 +4,8 @@ This repository provides a step-by-step tutorial for running [COSMOS](https://gi
 
 **Publication:** Dugourd *et al.*, "Modeling causal signal propagation in multi-omic factor space with COSMOS", *bioRxiv* (2024). [doi:10.1101/2024.07.15.603538](https://doi.org/10.1101/2024.07.15.603538)
 
+An additional [RNA-only GRN evaluation practical](GRN_comparison/README.md) uses gretapy to compare larger data-driven, CollecTRI and random networks on the NCI-60 RNA measurements. Its main notebook starts with the overall task-ranking heatmap, then explains the predictive, literature and perturbation-based evaluation categories. The paired RNA+ATAC example is kept separately for a later session.
+
 ## What does the main script do?
 
 The main analysis script (`scripts/net_compr_MOON.R`) takes pre-processed inputs for a single NCI-60 cell line and builds a mechanistic network connecting upstream transcription factor (TF) activities to downstream metabolomic measurements through a signed, directed prior knowledge network. The pipeline has five stages:
@@ -72,6 +74,7 @@ data/
   RNA/                        # Raw Excel and processed RNA expression data
 support/                      # TF regulons, pathway GMTs, metabolite matching tables
 results/                      # Output SIF/ATT network files and MOON scores
+GRN_comparison/               # RNA-only GRETA practical; separate RNA+ATAC preview
 ```
 
 ## Running the tutorial

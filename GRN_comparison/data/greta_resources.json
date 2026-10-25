@@ -1,0 +1,75 @@
+{
+  "source_record": "https://zenodo.org/records/19600656",
+  "license": "CC-BY-4.0",
+  "credit": "Pau Badia-i-Mompel and GRETA authors; see the gretapy evaluation tutorial and cited manuscript.",
+  "paper": "https://doi.org/10.1101/2024.12.20.629764",
+  "bundled_file": "greta_published_metrics.csv.gz",
+  "notice": "Published scores are a separate reference panel, not newly computed student/toy scores.",
+  "resources": [
+    {
+      "key": "hg38_cre_blacklist.bed.gz",
+      "size": 5868,
+      "checksum": "md5:0c3e3d3f164ff213ea1949df08014d29"
+    },
+    {
+      "key": "hg38_cre_encode.bed.gz",
+      "size": 8846915,
+      "checksum": "md5:144b01fc139902ebad59361a53e50952"
+    },
+    {
+      "key": "hg38_cre_promoters.bed.gz",
+      "size": 511270,
+      "checksum": "md5:916c88d8a2e47d1bf8ffca3168c9d136"
+    },
+    {
+      "key": "hg38_tfp_intact.tsv.gz",
+      "size": 797,
+      "checksum": "md5:7ab1637b3a47a54a21fb4d1d0efeee98"
+    },
+    {
+      "key": "hg38_tfm_tfmdb.tsv.gz",
+      "size": 7634,
+      "checksum": "md5:8e043157d6bfebe93fbe55aa39cc4459"
+    },
+    {
+      "key": "hg38_tfp_europmc.tsv.gz",
+      "size": 65745,
+      "checksum": "md5:516ad7bfab23c9bd97ac627cab5ff407"
+    },
+    {
+      "key": "hg38_gst_collectri.csv.gz",
+      "size": 177381,
+      "checksum": "md5:97d4b354fefc4eb1da5a1de18424683c"
+    },
+    {
+      "key": "hg38_gst_hall.csv.gz",
+      "size": 30021,
+      "checksum": "md5:94789ecd55ccfe8db207afcd01dd1c4c"
+    },
+    {
+      "key": "hg38_tfm_hpa.tsv.gz",
+      "size": 4854,
+      "checksum": "md5:943f1e439e04b78131c406aa2c2882bc"
+    },
+    {
+      "key": "hg38_terms.csv.gz",
+      "size": 87953,
+      "checksum": "md5:a4fffefaf6bd5b2bd2224d9d15c8bcbb"
+    },
+    {
+      "key": "hg38_prt_knocktf.h5ad.gz",
+      "size": 74140379,
+      "checksum": "md5:f8a2897d6bb7d34c1ea4dcc2b4dfa82d"
+    },
+    {
+      "key": "mm10_terms.csv.gz",
+      "size": 8474,
+      "checksum": "md5:df644e1ef61292cef4617bcfc73faa2a"
+    },
+    {
+      "key": "metrics.csv.gz",
+      "size": 152349,
+      "checksum": "md5:5e310bc68bf3655af8de77b2d54880ae"
+    }
+  ]
+}

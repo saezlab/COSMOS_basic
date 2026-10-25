@@ -1,0 +1,12 @@
+# Python 3.12 is the tested teaching environment; gretapy requires Python >=3.11.
+gretapy==0.0.3
+# gretapy 0.0.3 imports mu.set_options, which MuData 0.4 removed.
+mudata<0.4
+numpy
+pandas
+scipy
+scikit-learn
+matplotlib
+ipykernel
+nbformat
+nbclient
