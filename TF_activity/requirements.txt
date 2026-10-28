@@ -1,0 +1,9 @@
+# Python 3.12; the decoupler 2.x API is used throughout the notebook.
+decoupler==2.2.0
+numpy>=2,<3
+pandas>=2,<4
+scipy>=1.12,<2
+matplotlib>=3.8,<4
+ipykernel
+nbformat
+nbclient

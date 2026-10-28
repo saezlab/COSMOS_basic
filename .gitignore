@@ -10,3 +10,5 @@ cplex
 tuto_1.mp4
 cplex_macos/**
 cplex_win/**
+__pycache__/
+.pytest_cache/

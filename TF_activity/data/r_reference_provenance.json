@@ -1,0 +1,12 @@
+{
+  "description": "Text export of the archived TF_scores vectors from cosmos_inputs.RData. Used only to validate Python activity estimates; never used as an inference input. The R package versions that generated the original archive were not recorded.",
+  "generated_with": "Rscript TF_activity/export_r_reference.R",
+  "source": "data/cosmos/cosmos_inputs.RData",
+  "source_md5": "ed17dd8aab966b27a211c145f74e5dd7",
+  "export": "TF_activity/data/r_reference_tf_scores.tsv.gz",
+  "export_md5": "c2146c9830f1b97d51230fb84bad6ba6",
+  "n_records": 10548,
+  "n_cell_lines": 56,
+  "score": "Archived decoupleR ULM t-statistic; no p-value filtering.",
+  "numeric_precision": "17 significant decimal digits preserve stored doubles."
+}
