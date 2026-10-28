@@ -18,11 +18,11 @@ Reuse your Python **3.12** teaching environment and the existing locked dependen
 cd /Users/dugourd/Documents/COSMOS_basic/GRN_comparison
 uv venv --python 3.12 .venv
 source .venv/bin/activate
-uv pip install -r requirements-lock.txt
-uv pip install --python .venv/bin/python jupyterlab
+uv pip install --python .venv/bin/python -r requirements-lock.txt jupyterlab
+python -m ipykernel install --sys-prefix --name cosmos-grn --display-name "Python (GRN comparison)"
 ```
 
-If the environment already exists, just activate it. Without `uv`, use `python3.12 -m venv .venv` and `python -m pip install` after activation. On Windows PowerShell, activate with `.\.venv\Scripts\Activate.ps1`.
+If the environment already exists, activate it; run the kernel-registration command once if the named kernel is not listed. Without `uv`, use `python3.12 -m venv .venv` and `python -m pip install` after activation. On Windows PowerShell, activate with `.\.venv\Scripts\Activate.ps1`.
 
 On this teaching Mac, make R's OpenMP library available **before launching Python or Jupyter**:
 
@@ -31,7 +31,7 @@ export DYLD_FALLBACK_LIBRARY_PATH="$(R RHOME)/lib:${DYLD_FALLBACK_LIBRARY_PATH:-
 python -m jupyterlab 02_greta_evaluation.ipynb
 ```
 
-Choose the environment's kernel and run cells from the top with **Shift+Enter**. JupyterLab is recommended for the interactive class. A Mac without R's library can use `brew install libomp`; consult the [XGBoost installation guide](https://xgboost.readthedocs.io/en/stable/install.html) for platform prerequisites.
+Choose **Python (GRN comparison)** and run cells from the top with **Shift+Enter**. The named kernel is installed inside `.venv`; it does not change your global Python setup. JupyterLab is recommended for the interactive class. A Mac without R's library can use `brew install libomp`; consult the [XGBoost installation guide](https://xgboost.readthedocs.io/en/stable/install.html) for platform prerequisites.
 
 Prepare the full benchmark before class:
 
@@ -46,6 +46,20 @@ python run_rna_benchmark.py --profile quick --output-dir results/rna_quick
 ```
 
 Reference files are downloaded into `gretapy_data/` on their first use. KnockTF is the largest individual download, approximately 74 MB compressed. Prepopulate the cache and run the intended profile before teaching. The bundled expression snapshot needs no extra dependency; regenerating it from the original XLS requires `xlrd==2.0.2`.
+
+### Recovering from an incomplete temporary environment
+
+An error such as `Failed to read metadata ... /private/tmp/cosmos-grn-venv/.../METADATA: No such file or directory` means installed package metadata is missing. That temporary environment may also be missing other files, so reinstalling JupyterLab alone can be insufficient. Use the persistent `.venv` in this folder with the setup commands above. Temporary directories are unsuitable for an environment you want to keep between teaching sessions.
+
+Once `.venv` is installed, launch it explicitly from a fresh Terminal session:
+
+```bash
+cd /Users/dugourd/Documents/COSMOS_basic/GRN_comparison
+export DYLD_FALLBACK_LIBRARY_PATH="$(R RHOME)/lib:${DYLD_FALLBACK_LIBRARY_PATH:-}"
+.venv/bin/python -m jupyterlab 02_greta_evaluation.ipynb
+```
+
+Open the URL printed by this new server and select **Python (GRN comparison)**. An older browser tab can still be connected to the temporary environment's server or kernel. Inside the notebook, `import sys; print(sys.executable)` should show this folder's `.venv/bin/python`.
 
 ## Real RNA data and larger networks
 
