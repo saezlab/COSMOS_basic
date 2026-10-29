@@ -1,0 +1,25 @@
+name	db	status	n_eligible	n_tested	n_skipped_insufficient_targets	n_hits	n_reference	n_predicted	n_common_tested
+SCENIC+	KnockTF (scoring)	evaluated	5.0	2.0	0.0	2.0			2.0
+SCENIC+	Reactome	evaluated		911.0		32.0	100.0	91.0	
+SCENIC+	Europe PMC	evaluated		2926.0		42.0	624.0	1726.0	
+SCENIC+	PROGENy	evaluated		12.0		3.0	3.0	8.0	
+SCENIC+	HPA	diagnostic: invariant source TF set		79.0		19.0	50.0	79.0	
+SCENIC+	IntAct	evaluated		120.0		1.0	93.0	13.0	
+SCENIC+	Hallmarks	evaluated		50.0		11.0	15.0	25.0	
+SCENIC+	TF-Marker	diagnostic: invariant source TF set		79.0		11.0	44.0	79.0	
+CollecTRI	KnockTF (scoring)	evaluated	5.0	2.0	0.0	2.0			2.0
+CollecTRI	Reactome	evaluated		911.0		83.0	100.0	533.0	
+CollecTRI	Europe PMC	evaluated		2926.0		23.0	624.0	187.0	
+CollecTRI	PROGENy	evaluated		12.0		3.0	3.0	7.0	
+CollecTRI	HPA	diagnostic: invariant source TF set		79.0		19.0	50.0	79.0	
+CollecTRI	IntAct	evaluated		120.0		1.0	93.0	1.0	
+CollecTRI	Hallmarks	evaluated		50.0		14.0	15.0	41.0	
+CollecTRI	TF-Marker	diagnostic: invariant source TF set		79.0		11.0	44.0	79.0	
+Random	KnockTF (scoring)	evaluated	5.0	2.0	0.0	0.0			2.0
+Random	Reactome	evaluated		911.0		8.0	100.0	20.0	
+Random	Europe PMC	evaluated		2926.0		0.0	624.0	0.0	
+Random	PROGENy	evaluated		12.0		3.0	3.0	4.0	
+Random	HPA	diagnostic: invariant source TF set		79.0		19.0	50.0	79.0	
+Random	IntAct	evaluated		120.0		0.0	93.0	0.0	
+Random	Hallmarks	evaluated		50.0		6.0	15.0	15.0	
+Random	TF-Marker	diagnostic: invariant source TF set		79.0		11.0	44.0	79.0	

@@ -1,0 +1,10 @@
+name	organism	dataset	class	task	db	precision	recall	f01	native_f01	reason
+SCENIC+	hg38	Heart cell-type pseudobulk	Mechanistic	TF Scoring	KnockTF (scoring)	1.0	0.4	0.9853658536585366	0.9853658536585366	Low-coverage diagnostic: 2 common tested experiments; minimum 10 for composite ranking (pragmatic teaching guard, not a universal statistical threshold)
+CollecTRI	hg38	Heart cell-type pseudobulk	Mechanistic	TF Scoring	KnockTF (scoring)	1.0	0.4	0.9853658536585366	0.9853658536585366	Low-coverage diagnostic: 2 common tested experiments; minimum 10 for composite ranking (pragmatic teaching guard, not a universal statistical threshold)
+Random	hg38	Heart cell-type pseudobulk	Mechanistic	TF Scoring	KnockTF (scoring)	0.0	0.0	0.0	0.0	Low-coverage diagnostic: 2 common tested experiments; minimum 10 for composite ranking (pragmatic teaching guard, not a universal statistical threshold)
+SCENIC+	hg38	Heart cell-type pseudobulk	Literature	TF Markers	HPA	0.24050632911392406	0.38	0.24138364779874213	0.24138364779874213	Source-only diagnostic: the compared networks deliberately have the same TF set
+CollecTRI	hg38	Heart cell-type pseudobulk	Literature	TF Markers	HPA	0.24050632911392406	0.38	0.24138364779874213	0.24138364779874213	Source-only diagnostic: the compared networks deliberately have the same TF set
+Random	hg38	Heart cell-type pseudobulk	Literature	TF Markers	HPA	0.24050632911392406	0.38	0.24138364779874213	0.24138364779874213	Source-only diagnostic: the compared networks deliberately have the same TF set
+SCENIC+	hg38	Heart cell-type pseudobulk	Literature	TF Markers	TF-Marker	0.13924050632911392	0.25	0.13985397784491438	0.13985397784491438	Source-only diagnostic: the compared networks deliberately have the same TF set
+CollecTRI	hg38	Heart cell-type pseudobulk	Literature	TF Markers	TF-Marker	0.13924050632911392	0.25	0.13985397784491438	0.13985397784491438	Source-only diagnostic: the compared networks deliberately have the same TF set
+Random	hg38	Heart cell-type pseudobulk	Literature	TF Markers	TF-Marker	0.13924050632911392	0.25	0.13985397784491438	0.13985397784491438	Source-only diagnostic: the compared networks deliberately have the same TF set

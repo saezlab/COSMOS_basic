@@ -1,0 +1,19 @@
+db	background	name	counted_unit	n_rna_tested_pathways	n_reference_pathways	n_predicted	n_expression_hits	tp	fp	fn	precision	recall	f01
+Hallmarks	native_20000	SCENIC+	pathway labels	50	50	25	15	11	14	4	0.44	0.7333333333333333	0.44174950298210736
+Hallmarks	native_20000	CollecTRI	pathway labels	50	50	41	15	14	27	1	0.34146341463414637	0.9333333333333333	0.34362089914945326
+Hallmarks	native_20000	Random	pathway labels	50	50	15	15	6	9	9	0.4	0.4	0.4
+Hallmarks	eligible_nonself	SCENIC+	pathway labels	50	50	6	15	4	2	11	0.6666666666666666	0.26666666666666666	0.6569105691056911
+Hallmarks	eligible_nonself	CollecTRI	pathway labels	50	50	41	15	14	27	1	0.34146341463414637	0.9333333333333333	0.34362089914945326
+Hallmarks	eligible_nonself	Random	pathway labels	50	50	0	15	0	0	15	0.0	0.0	0.0
+PROGENy	native_20000	SCENIC+	pathway labels	12	13	8	3	3	5	0	0.375	1.0	0.37733499377335
+PROGENy	native_20000	CollecTRI	pathway labels	12	13	7	3	3	4	0	0.42857142857142855	1.0	0.4310099573257468
+PROGENy	native_20000	Random	pathway labels	12	13	4	3	3	1	0	0.75	1.0	0.7518610421836228
+PROGENy	eligible_nonself	SCENIC+	pathway labels	12	13	6	3	3	3	0	0.5	1.0	0.5024875621890548
+PROGENy	eligible_nonself	CollecTRI	pathway labels	12	13	6	3	3	3	0	0.5	1.0	0.5024875621890548
+PROGENy	eligible_nonself	Random	pathway labels	12	13	1	3	1	0	2	1.0	0.3333333333333333	0.9805825242718447
+Reactome	native_20000	SCENIC+	pathway labels	911	1736	91	100	32	59	68	0.3516483516483517	0.32	0.351304347826087
+Reactome	native_20000	CollecTRI	pathway labels	911	1736	533	100	83	450	17	0.15572232645403378	0.83	0.15698501872659176
+Reactome	native_20000	Random	pathway labels	911	1736	20	100	8	12	92	0.4	0.08	0.38476190476190475
+Reactome	eligible_nonself	SCENIC+	pathway labels	911	1736	10	100	2	8	98	0.2	0.02	0.18363636363636365
+Reactome	eligible_nonself	CollecTRI	pathway labels	911	1736	479	100	75	404	25	0.15657620041753653	0.75	0.15781250000000002
+Reactome	eligible_nonself	Random	pathway labels	911	1736	0	100	0	0	100	0.0	0.0	0.0

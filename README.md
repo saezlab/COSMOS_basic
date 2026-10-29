@@ -8,6 +8,8 @@ An additional [RNA-only GRN evaluation practical](GRN_comparison/README.md) uses
 
 For Python-based input preparation, the [TF activity notebook](TF_activity/01_tf_activity_decoupler.ipynb) reproduces the RNA scaling and CollecTRI/ULM activity estimation in `scripts/prepare_cosmos_inputs.R` using `decoupler`. See its [setup and interpretation guide](TF_activity/README.md).
 
+The [cardiac pseudobulk practical](Heart_pseudobulk/README.md) provides compact six-cell-type RNA data and three scripts for TF activity, SCENIC+/CollecTRI/Random comparison, and MOON with TF activities downstream and no upstream measurements.
+
 ## What does the main script do?
 
 The main analysis script (`scripts/net_compr_MOON.R`) takes pre-processed inputs for a single NCI-60 cell line and builds a mechanistic network connecting upstream transcription factor (TF) activities to downstream metabolomic measurements through a signed, directed prior knowledge network. The pipeline has five stages:
@@ -78,6 +80,7 @@ support/                      # TF regulons, pathway GMTs, metabolite matching t
 results/                      # Output SIF/ATT network files and MOON scores
 GRN_comparison/               # RNA-only GRETA practical; separate RNA+ATAC preview
 TF_activity/                  # Python notebook for CollecTRI/ULM TF activity inputs
+Heart_pseudobulk/              # Cardiac pseudobulk TF activities, GRN comparison and RNA-only MOON
 ```
 
 ## Running the tutorial

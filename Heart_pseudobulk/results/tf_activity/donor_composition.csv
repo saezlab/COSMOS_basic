@@ -1,0 +1,54 @@
+cell_type,donor,n_cells
+Atrial Cardiomyocyte,D8,29
+Atrial Cardiomyocyte,A61,27
+Atrial Cardiomyocyte,D7,14
+Atrial Cardiomyocyte,AV14,10
+Atrial Cardiomyocyte,AH1,7
+Atrial Cardiomyocyte,AH2,7
+Atrial Cardiomyocyte,AV13,3
+Atrial Cardiomyocyte,AV3,3
+Endothelial cell,AH1,34
+Endothelial cell,D7,16
+Endothelial cell,A61,13
+Endothelial cell,D8,11
+Endothelial cell,AH2,10
+Endothelial cell,AV14,7
+Endothelial cell,AV13,5
+Endothelial cell,AV10,2
+Endothelial cell,AV3,1
+Endothelial cell,D3,1
+Fibroblast,A61,26
+Fibroblast,AH1,18
+Fibroblast,AH2,14
+Fibroblast,AV14,14
+Fibroblast,D8,10
+Fibroblast,AV10,7
+Fibroblast,AV13,5
+Fibroblast,AV3,4
+Fibroblast,D7,2
+Mural cell,AH1,42
+Mural cell,D8,16
+Mural cell,AV14,13
+Mural cell,D7,9
+Mural cell,A61,7
+Mural cell,AH2,5
+Mural cell,D3,5
+Mural cell,AV10,2
+Mural cell,AV13,1
+Myeloid,AH2,21
+Myeloid,A61,20
+Myeloid,AH1,19
+Myeloid,AV13,14
+Myeloid,AV3,7
+Myeloid,AV10,5
+Myeloid,D7,5
+Myeloid,D8,5
+Myeloid,D3,3
+Myeloid,AV14,1
+Ventricular Cardiomyocyte,AH1,50
+Ventricular Cardiomyocyte,A61,16
+Ventricular Cardiomyocyte,D7,11
+Ventricular Cardiomyocyte,D8,11
+Ventricular Cardiomyocyte,AV13,7
+Ventricular Cardiomyocyte,D3,3
+Ventricular Cardiomyocyte,AH2,2

@@ -1,0 +1,4 @@
+name	n_sources	n_cres	n_targets	n_edges	mean_regulon_size
+SCENIC+	79	0	1459	2641	33.43037974683544
+CollecTRI	79	0	844	2641	33.43037974683544
+Random	79	0	1963	2641	33.43037974683544

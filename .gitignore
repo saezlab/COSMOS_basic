@@ -12,3 +12,6 @@ cplex_macos/**
 cplex_win/**
 __pycache__/
 .pytest_cache/
+# Keep original single-cell matrices local; publish the compact teaching input.
+*.h5ad
+!Heart_pseudobulk/data/heart_pseudobulk.h5ad

@@ -1,0 +1,13 @@
+{
+  "description": "SCENIC+ TF-gene network supplied by the user; exact inference version/settings and source cohort were not supplied. May have been inferred from the full parent dataset.",
+  "source_filename": "grn.tsv",
+  "sha256": "0bf52eae619dbca3a86d8d4a405d398479cfa59a356976a0bd3cccebd0e64df2",
+  "columns": {
+    "TF": "source label",
+    "gene": "target gene symbol",
+    "type": "activator or repressor annotation, used as the sign",
+    "score": "positive supplied edge score; exact statistical interpretation not supplied",
+    "n_topics": "supplied metadata; not a regulatory sign or p-value"
+  },
+  "sign_conflict_policy": "Raw table preserved. Comparison script excludes every source-target pair with both activator and repressor labels and exports its audit."
+}

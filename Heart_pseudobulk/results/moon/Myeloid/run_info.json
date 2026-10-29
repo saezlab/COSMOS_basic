@@ -1,0 +1,74 @@
+{
+  "cell_type": "Myeloid",
+  "timestamp_utc": "2026-10-29 08:39:45 UTC",
+  "cosmosR_version": "1.21.2",
+  "cosmosR_commit": "b2ed195738479c4ad204cace37fd11ae2fd02bb8",
+  "decoupleR_version": "2.9.7",
+  "input_files": {
+    "directory": "/Users/dugourd/Documents/COSMOS_basic/Heart_pseudobulk/results/tf_activity",
+    "md5": {
+      "/Users/dugourd/Documents/COSMOS_basic/Heart_pseudobulk/results/tf_activity/tf_scores.csv": "8980fb4e502ff3b046f446dfba490a92",
+      "/Users/dugourd/Documents/COSMOS_basic/Heart_pseudobulk/results/tf_activity/rna_scaled.csv": "740723200beb5d79c3bc4a21a5ffd65d"
+    }
+  },
+  "mapping": {
+    "upstream_input": null,
+    "downstream_input": "CollecTRI ULM TF activity t scores",
+    "identifiers": "gene symbols and original signaling-complex IDs",
+    "RNA": "annotation only; not propagated as protein activity",
+    "baseline": "gene-wise Z scores across six pooled cell types; not a treated-control contrast"
+  },
+  "pkn": {
+    "source": "cosmosR::meta_network",
+    "signaling_edges_before_pruning": 19533,
+    "uncompressed_edges": 13721,
+    "scoring_edges": 12070,
+    "expression_pruning": false,
+    "expression_pruning_reason": "HVG/TF-selected gene subset cannot establish absence of unmeasured intermediates",
+    "no_upstream_controllability_prune": true
+  },
+  "settings": {
+    "statistic": "ulm",
+    "n_steps": 4,
+    "n_layers": 4,
+    "TF_activity_cutoff": 2,
+    "display_score_cutoff": 1.5,
+    "thresholds_are_heuristics_not_significance": true
+  },
+  "compression": {
+    "used": true,
+    "reason": "safe same-children compression",
+    "protected_input_ids_unchanged": true,
+    "n_renamed_original_nodes": 1189
+  },
+  "coherence": {
+    "applied": false,
+    "iterations": 1,
+    "convergence": "not applicable; fixed signaling PKN",
+    "reason": "No separate TF-target transcript layer is added; RNA Z scores are annotations and the TF footprints already use RNA"
+  },
+  "coverage": {
+    "n_available_TFs": 180,
+    "n_downstream_TFs": 48,
+    "input_ids": ["AHR", "ATF2", "ATF4", "CEBPA", "CEBPB", "CEBPG", "CREB1", "E2F1", "ELF1", "ETS2", "FLI1", "FOS", "FOXP3", "GATA4", "HMGA1", "IRF1", "IRF3", "IRF8", "JUN", "MAX", "MYB", "MYC", "NCOA3", "NCOR2", "NFATC2", "NFE2L2", "NFKB1", "NR1H3", "RARA", "REL", "RELA", "RORA", "RUNX1", "SMAD3", "SOX2", "SOX9", "SP1", "SP3", "SPI1", "SREBF1", "STAT1", "STAT3", "STAT5A", "STAT5B", "TBP", "USF1", "VDR", "WT1"],
+    "lost_input_ids": ["AP1", "MBD2", "NFKB"]
+  },
+  "score_levels": {
+    "0": 48,
+    "1": 453,
+    "2": 1370,
+    "3": 1170,
+    "4": 394
+  },
+  "extraction": {
+    "rule": "abs(score)>cutoff; signed edges from level k to k-1; directed route to a level-0 TF",
+    "sign_consistency_passed": true,
+    "downstream_reachability_passed": true,
+    "n_nodes": 465,
+    "n_edges": 482,
+    "n_isolated_observed_TFs": 26
+  },
+  "elapsed_seconds": 0.62,
+  "outputs": ["tf_input_coverage.csv", "pkn_uncompressed.csv", "pkn_scoring.csv", "compression_mapping.csv", "moon_scores_scoring_ids.csv", "moon_scores.csv", "top_regulators.csv", "SIF.csv", "ATT.csv", "network_audit.csv", "threshold_sensitivity.csv", "compression.rds", "moon_diagnostics.pdf", "moon_diagnostics.png", "run_info.json", "sessionInfo.txt"],
+  "interpretation": "Prior-knowledge-compatible upstream hypotheses; no measured upstream constraints or causal validation"
+}

@@ -1,0 +1,16 @@
+name	experiment	TF	tissue	knockdown_logFC	n_measured_targets	n_nonzero_targets	tested	activity	raw_pvalue	adjusted_pvalue	recovered	tested_in_every_network
+SCENIC+	DataSet_01_061	GATA2	Endothelium	-0.52569	0	0	False				False	False
+SCENIC+	DataSet_03_073	ETS1	Fibroblasts	-1.201786	435	408	True	-2.7773331145979245	0.005487189162522554	0.010974378325045109	True	True
+SCENIC+	DataSet_03_074	ETS1	Fibroblasts	-1.195833	435	402	True	-2.453547890893605	0.014156365767121315	0.014156365767121315	True	True
+SCENIC+	DataSet_03_222	RELA	Fibroblasts	-1.321429	0	0	False				False	False
+SCENIC+	DataSet_03_223	RELA	Fibroblasts	-1.413095	0	0	False				False	False
+CollecTRI	DataSet_01_061	GATA2	Endothelium	-0.52569	0	0	False				False	False
+CollecTRI	DataSet_03_073	ETS1	Fibroblasts	-1.201786	84	76	True	-3.599412753936199	0.00031991719151847064	0.0003961283655371517	True	True
+CollecTRI	DataSet_03_074	ETS1	Fibroblasts	-1.195833	84	77	True	-3.5434219309429666	0.0003961283655371517	0.0003961283655371517	True	True
+CollecTRI	DataSet_03_222	RELA	Fibroblasts	-1.321429	0	0	False				False	False
+CollecTRI	DataSet_03_223	RELA	Fibroblasts	-1.413095	0	0	False				False	False
+Random	DataSet_01_061	GATA2	Endothelium	-0.52569	0	0	False				False	False
+Random	DataSet_03_073	ETS1	Fibroblasts	-1.201786	427	379	True	0.6786368271180502	0.49737799167633057	0.5173599123954773	False	True
+Random	DataSet_03_074	ETS1	Fibroblasts	-1.195833	427	376	True	0.6474351502357608	0.5173599123954773	0.5173599123954773	False	True
+Random	DataSet_03_222	RELA	Fibroblasts	-1.321429	0	0	False				False	False
+Random	DataSet_03_223	RELA	Fibroblasts	-1.413095	0	0	False				False	False

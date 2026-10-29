@@ -1,0 +1,3 @@
+# Preserve empty final TSV fields and R's generated fixed-width session output.
+Heart_pseudobulk/results/grn_comparison/*/coverage.tsv whitespace=-blank-at-eol
+Heart_pseudobulk/results/moon/*/sessionInfo.txt whitespace=-blank-at-eol

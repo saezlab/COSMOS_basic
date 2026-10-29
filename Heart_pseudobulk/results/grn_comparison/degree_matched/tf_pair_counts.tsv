@@ -1,0 +1,7 @@
+name	db	counted_unit	n_predicted	n_expression_hits	tp	fp	fn	precision	recall	f01
+SCENIC+	IntAct	unordered TF pairs	0	93	0	0	93	0.0	0.0	0.0
+CollecTRI	IntAct	unordered TF pairs	1	93	1	0	92	1.0	0.010752688172043012	0.5233160621761658
+Random	IntAct	unordered TF pairs	0	93	0	0	93	0.0	0.0	0.0
+SCENIC+	Europe PMC	unordered TF pairs	66	624	5	61	619	0.07575757575757576	0.008012820512820512	0.06990586932447398
+CollecTRI	Europe PMC	unordered TF pairs	187	624	23	164	601	0.12299465240641712	0.03685897435897436	0.12021320637549163
+Random	Europe PMC	unordered TF pairs	0	624	0	0	624	0.0	0.0	0.0

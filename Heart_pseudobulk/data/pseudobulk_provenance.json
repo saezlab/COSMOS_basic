@@ -1,0 +1,28 @@
+{
+  "source_filename": "rna.h5ad",
+  "source_sha256": "efe6c8deefa387ae19406c7305af5b81f5c4812ddd5db91f31ec086b14a78fa9",
+  "original_shape": [
+    600,
+    4070
+  ],
+  "pseudobulk_file": "heart_pseudobulk.h5ad",
+  "pseudobulk_shape": [
+    6,
+    4070
+  ],
+  "pseudobulk_sha256": "6e872b123b1227897372ab89a2ff95ba062265bc5f12ac05f3af7283b65f6ff5",
+  "processing": {
+    "groupby": "cell_type",
+    "aggregation": "sum of provided integer counts across all cells of each cell type",
+    "input_n_cells": 600,
+    "input_n_genes": 4070,
+    "input_count_total": 1110049,
+    "target_sum": 10000.0,
+    "X": "natural log1p of counts normalized to target_sum over the supplied gene subset",
+    "normalization_background": "provided genes only; full-transcriptome library totals are unavailable",
+    "replication": "one pooled profile per cell type; donor variation is not modeled",
+    "organism_tissue": "human heart inferred from source gene IDs and supplied cell annotations",
+    "input_assumption": "X contains counts; integer values verified, assay provenance was not supplied"
+  },
+  "source_citation": "not supplied; original cell annotations were retained in aggregate form"
+}

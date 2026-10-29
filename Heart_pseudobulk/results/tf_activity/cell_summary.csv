@@ -1,0 +1,7 @@
+cell_type,n_genes,n_tfs_tested,zero_zscore_genes
+Atrial Cardiomyocyte,4070,180,0
+Endothelial cell,4070,180,0
+Fibroblast,4070,180,0
+Mural cell,4070,180,0
+Myeloid,4070,180,0
+Ventricular Cardiomyocyte,4070,180,0

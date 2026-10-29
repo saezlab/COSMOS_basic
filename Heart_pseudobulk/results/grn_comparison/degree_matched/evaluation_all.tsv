@@ -1,0 +1,25 @@
+name	organism	dataset	class	task	db	precision	recall	f01	native_f01
+SCENIC+	hg38	Heart cell-type pseudobulk	Mechanistic	TF Scoring	KnockTF (scoring)	0.0	0.0	0.0	0.0
+SCENIC+	hg38	Heart cell-type pseudobulk	Predictive	Gene Sets	Reactome	0.13793103448275862	0.04	0.13466666666666668	0.13466666666666668
+SCENIC+	hg38	Heart cell-type pseudobulk	Literature	TF Pairs	Europe PMC	0.07575757575757576	0.008012820512820512	0.06990586932447398	0.06990586932447398
+SCENIC+	hg38	Heart cell-type pseudobulk	Predictive	Gene Sets	PROGENy	0.5	0.6666666666666666	0.501240694789082	0.501240694789082
+SCENIC+	hg38	Heart cell-type pseudobulk	Literature	TF Markers	HPA	0.24050632911392406	0.38	0.24138364779874213	0.24138364779874213
+SCENIC+	hg38	Heart cell-type pseudobulk	Literature	TF Pairs	IntAct	0.0	0.0	0.0	0.0
+SCENIC+	hg38	Heart cell-type pseudobulk	Predictive	Gene Sets	Hallmarks	0.45454545454545453	0.3333333333333333	0.45291479820627806	0.45291479820627806
+SCENIC+	hg38	Heart cell-type pseudobulk	Literature	TF Markers	TF-Marker	0.13924050632911392	0.25	0.13985397784491438	0.13985397784491438
+CollecTRI	hg38	Heart cell-type pseudobulk	Mechanistic	TF Scoring	KnockTF (scoring)	1.0	0.4	0.9853658536585366	0.9853658536585366
+CollecTRI	hg38	Heart cell-type pseudobulk	Predictive	Gene Sets	Reactome	0.15572232645403378	0.83	0.15698501872659176	0.15698501872659176
+CollecTRI	hg38	Heart cell-type pseudobulk	Literature	TF Pairs	Europe PMC	0.12299465240641712	0.03685897435897436	0.12021320637549163	0.12021320637549163
+CollecTRI	hg38	Heart cell-type pseudobulk	Predictive	Gene Sets	PROGENy	0.42857142857142855	1.0	0.4310099573257468	0.4310099573257468
+CollecTRI	hg38	Heart cell-type pseudobulk	Literature	TF Markers	HPA	0.24050632911392406	0.38	0.24138364779874213	0.24138364779874213
+CollecTRI	hg38	Heart cell-type pseudobulk	Literature	TF Pairs	IntAct	1.0	0.010752688172043012	0.5233160621761658	0.5233160621761658
+CollecTRI	hg38	Heart cell-type pseudobulk	Predictive	Gene Sets	Hallmarks	0.34146341463414637	0.9333333333333333	0.34362089914945326	0.34362089914945326
+CollecTRI	hg38	Heart cell-type pseudobulk	Literature	TF Markers	TF-Marker	0.13924050632911392	0.25	0.13985397784491438	0.13985397784491438
+Random	hg38	Heart cell-type pseudobulk	Mechanistic	TF Scoring	KnockTF (scoring)	0.0	0.0	0.0	0.0
+Random	hg38	Heart cell-type pseudobulk	Predictive	Gene Sets	Reactome	0.4482758620689655	0.13	0.4376666666666667	0.4376666666666667
+Random	hg38	Heart cell-type pseudobulk	Literature	TF Pairs	Europe PMC	0.0	0.0	0.0	0.0
+Random	hg38	Heart cell-type pseudobulk	Predictive	Gene Sets	PROGENy	1.0	0.3333333333333333	0.9805825242718447	0.9805825242718447
+Random	hg38	Heart cell-type pseudobulk	Literature	TF Markers	HPA	0.24050632911392406	0.38	0.24138364779874213	0.24138364779874213
+Random	hg38	Heart cell-type pseudobulk	Literature	TF Pairs	IntAct	0.0	0.0	0.0	0.0
+Random	hg38	Heart cell-type pseudobulk	Predictive	Gene Sets	Hallmarks	0.6	0.2	0.5883495145631068	0.5883495145631068
+Random	hg38	Heart cell-type pseudobulk	Literature	TF Markers	TF-Marker	0.13924050632911392	0.25	0.13985397784491438	0.13985397784491438

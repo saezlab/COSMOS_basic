@@ -1,0 +1,62 @@
+{
+  "decoupler_version": "2.2.0",
+  "method": "ULM; t-statistic of signed target-weight coefficient, including intercept",
+  "min_targets": 20,
+  "n_regulon_edges": 43178,
+  "n_regulon_tfs": 1186,
+  "background": "all non-missing RNA z-scores in each cell line, including zeros",
+  "degrees_of_freedom": "n_available_genes_in_cell_line - 2",
+  "p_values": "raw two-sided Student t p-values reconstructed from ULM scores",
+  "p_adjusted": "native decoupler BH correction across tested TFs separately within each cell line",
+  "missing_scores": "TF has fewer than min_targets available targets in that cell line",
+  "preprocessing": {
+    "n_input_genes": 4070,
+    "n_removed_missing": 0,
+    "n_retained_genes": 4070,
+    "n_zero_or_undefined_sd": 0,
+    "n_cell_lines": 6,
+    "max_missing": 0,
+    "ddof": 1,
+    "imputation": "none"
+  },
+  "observation_semantics": "pooled cell types, not individual cell lines or donor replicates",
+  "normalization": {
+    "X": "natural log1p of counts normalized to target_sum over the supplied gene subset",
+    "aggregation": "sum of provided integer counts across all cells of each cell type",
+    "groupby": "cell_type",
+    "input_assumption": "X contains counts; integer values verified, assay provenance was not supplied",
+    "input_count_total": 1110049,
+    "input_n_cells": 600,
+    "input_n_genes": 4070,
+    "normalization_background": "provided genes only; full-transcriptome library totals are unavailable",
+    "organism_tissue": "human heart inferred from source gene IDs and supplied cell annotations",
+    "replication": "one pooled profile per cell type; donor variation is not modeled",
+    "target_sum": 10000.0
+  },
+  "orientation": "genes/TFs in rows, cell lines in columns; cell_summary is cell lines in rows",
+  "packages": {
+    "decoupler": "2.2.0",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1"
+  },
+  "provenance": {
+    "pseudobulk": {
+      "filename": "heart_pseudobulk.h5ad",
+      "sha256": "6e872b123b1227897372ab89a2ff95ba062265bc5f12ac05f3af7283b65f6ff5"
+    },
+    "regulons": {
+      "filename": "collectri.tsv",
+      "sha256": "365cbec6f38987c98cc54d5c6ecb4be6de01258ce307dfddd3947bf32a06179f"
+    },
+    "reference_workflow": "scripts/prepare_cosmos_inputs.R RNA/TF logic, with count normalization before scaling"
+  },
+  "outputs": {
+    "rna_scaled": "rna_scaled.csv",
+    "tf_scores": "tf_scores.csv",
+    "tf_pvalues": "tf_pvalues.csv",
+    "tf_padj": "tf_padj.csv",
+    "tf_target_counts": "tf_target_counts.csv",
+    "cell_summary": "cell_summary.csv"
+  }
+}

@@ -1,0 +1,6 @@
+task	reason
+Omics (Gene ~ TFs)	Six pooled cell types, one profile each: no valid native stratified train/test split or ten held-out observations; not scored as zero.
+Genomic/ATAC	The supplied file is a TF-gene projection without regulatory regions or ATAC measurements.
+CollecTRI reference overlap	CollecTRI is one compared network: self-reference is circular and excluded.
+TF Markers ranking	HPA and TF-Marker scores use source identities only; these are identical by construction. Saved as diagnostics.
+Perturbation forecasting / Boolean simulation	Omitted to keep this reduced comparison light; six type averages do not provide replicate-based validation.
