@@ -1,14 +1,15 @@
 # Cardiac pseudobulk: TF activity, GRN comparison and MOON
 
-Three scripts use the supplied cardiac RNA subset and SCENIC+ TF–gene network:
+Three analysis scripts and a comparison-plot helper use the supplied cardiac RNA subset and SCENIC+ TF–gene network:
 
-1. **[01_tf_activity.py](01_tf_activity.py)** — estimate CollecTRI TF activities from gene-wise Z-scores across six cell-type pseudobulks.
+1. **[01_tf_activity.py](01_tf_activity.py)** — estimate CollecTRI and SCENIC+ TF activities from the same gene-wise Z-scores, then plot matched activities and their differences.
 2. **[02_grn_comparison.py](02_grn_comparison.py)** — compare SCENIC+, CollecTRI and Random with GRETA; show the overall heatmap before category details.
-3. **[03_moon.R](03_moon.R)** — infer upstream signaling hypotheses with **no upstream input** and **TF activities as downstream observations**.
+3. **[03_moon.R](03_moon.R)** — infer upstream signaling hypotheses from each TF activity source, with **no upstream input**, including a comparison with identical TF identities and signaling networks.
+4. **[04_compare_moon.py](04_compare_moon.py)** — visualize changes in upstream scores, relative support and inferred signs, with indistinguishable hypotheses grouped explicitly.
 
 The compact [heart_pseudobulk.h5ad](data/heart_pseudobulk.h5ad) is already prepared. A clone needs neither the original cells nor a path to anyone's Downloads folder. The original supplied [SCENIC+ table](data/scenicplus_grn.tsv) is preserved alongside it. Dataset source and SCENIC+ inference settings were not supplied; provenance records file hashes and what is known.
 
-## Run the three scripts
+## Run the workflow
 
 Reuse the Python 3.12 environment from the GRN practical. From the repository root, activate it:
 
@@ -33,7 +34,8 @@ Then, from the repository root on either platform:
 ```bash
 python Heart_pseudobulk/01_tf_activity.py
 python Heart_pseudobulk/02_grn_comparison.py --download-resources --quick
-Rscript Heart_pseudobulk/03_moon.R
+Rscript Heart_pseudobulk/03_moon.R --all
+python Heart_pseudobulk/04_compare_moon.py
 ```
 
 The quick comparison skips the large external KnockTF resource. To include that diagnostic, run script 02 without `--quick`:
@@ -78,11 +80,21 @@ This verifies integer/nonnegative input, sums by `obs['cell_type']`, checks per-
 
 For each gene, subtract its mean log-normalized expression across the **six cell types**, then divide by its **sample SD (`ddof=1`)** across those types. A positive RNA Z-score therefore means higher expression than that gene's six-type average. Measured zero counts remain valid values; they are not missing data. Constant genes would become unavailable.
 
-The script reuses the tested [NCI60 Python helper](../scripts/tf_activity_decoupler.py), local CollecTRI snapshot and signed **ULM** method. Each cell type is scored separately, using every available gene as the background and requiring **at least 20 observed targets** per TF. `empty=False` preserves genuine zero Z-scores. The prepared input produces **180 TFs × 6 cell types = 1,080 activity estimates**.
+The script reuses the tested [NCI60 Python helper](../scripts/tf_activity_decoupler.py) and signed **ULM** method. Each cell type is scored separately against both the local CollecTRI snapshot and the full cleaned SCENIC+ network, using every available gene as the background and requiring **at least 20 observed targets** per TF. `empty=False` preserves genuine zero Z-scores. It estimates **180 CollecTRI TFs** and **102 SCENIC+ TFs**, with **40 TFs shared**. A TF's own RNA need not be measured. The SCENIC+ TF activity analysis uses all eligible regulons, rather than the smaller common-source network constructed for the GRETA comparison.
 
 The activity is the slope's **t-statistic**: it measures alignment between signed TF-target weights and gene Z-scores, relative to zero-weight background genes. Its sign describes the inferred target footprint, rather than the TF's own RNA abundance. Changing the set of reference cell types changes the scores. Raw and within-profile BH-adjusted p-values describe the gene-level model, not donor-level replication or causal proof.
 
-Start with `results/tf_activity/tf_activity_heatmap.png`: it shows original ULM scores for 20 variable TFs without rescaling TF rows. All scores are retained in `tf_scores.csv`. The outputs also include `rna_scaled.csv`, normalized RNA, summed counts, p-values, target coverage and donor composition. MOON reads these CSVs directly.
+The standalone plots retain the familiar appearance: [CollecTRI](results/tf_activity/tf_activity_heatmap.pdf) and [SCENIC+](results/tf_activity_scenicplus/tf_activity_heatmap.pdf) each show 20 variable TFs. To compare them, use the [matched three-panel figure](results/tf_activity_comparison/04_tf_activity_comparison.pdf): its CollecTRI and SCENIC+ panels have **identical TF rows, cell-type columns and color limits**. Rows are 20 shared TFs with the greatest average within-network score variance; all 40 shared TFs are exported. No TF row is standardized again.
+
+![Matched TF activities and signed delta](results/tf_activity_comparison/04_tf_activity_comparison.png)
+
+The third panel is **SCENIC+ minus CollecTRI**, calculated from the original t-statistics before display clipping. Positive/red means a more positive SCENIC+ score; negative/blue means a more negative SCENIC+ score. It does not necessarily mean stronger support: a shift from −1 to −4 has negative delta but larger magnitude. The individual matched panels and delta are also exported as separate PNG/PDF files in `results/tf_activity_comparison/`.
+
+SCENIC+ uses `type` (+1/−1) multiplied by its supplied positive edge score, with the same 594 opposing-sign pairs excluded as in script 02. Using this strength as a relative regulatory weight is a modeling choice; its exact statistical interpretation was not supplied. For the shared TFs, SCENIC+ has a median 331 measured targets versus 35.5 for CollecTRI. Target membership, degree, signs and relative weights all affect ULM scores. These deltas are **descriptive footprint differences**, not calibrated biological effect sizes or tests of differential activity.
+
+Per-cell-type Pearson agreement across the 40 shared TFs is 0.316–0.617, with 55–70% sign concordance. The myeloid profile has the largest median absolute score difference, 4.095. The supporting `agreement_by_cell_type.csv`, `target_coverage_all_tfs.csv`, scope tables and unthresholded score/delta matrices are saved beside the figures. Missing activities remain missing, rather than being filled with zero.
+
+Full score matrices, p-values, target counts and RNA exports are in `results/tf_activity/` and `results/tf_activity_scenicplus/`; MOON reads these directly. `--network collectri` or `--network scenicplus` runs one source, while the default estimates both. `--regulons PATH` retains the existing custom-regulon interface.
 
 ## 2. How should the GRN comparison be read?
 
@@ -121,17 +133,46 @@ The default example is **Ventricular Cardiomyocyte**. Run every type with:
 Rscript Heart_pseudobulk/03_moon.R --all
 ```
 
-MOON receives the CollecTRI TF activity scores as downstream observations, with `upstream_input=NULL`. It scores up to four levels of possible upstream signaling regulators using the bundled protein/complex PKN. RNA is an annotation, not a direct protein-activity input. The PKN is not restricted to the 4,070 selected genes, since this would remove unmeasured intermediates without evidence of absence.
+MOON receives either CollecTRI-derived or SCENIC+-derived TF activity scores as downstream observations, with `upstream_input=NULL`. It scores up to four levels of possible upstream signaling regulators using the same bundled protein/complex PKN. RNA is an annotation, not a direct protein-activity input. The PKN is not restricted to the 4,070 selected genes, since this would remove unmeasured intermediates without evidence of absence.
 
 The script protects observed TF identifiers during compression and saves complete mappings and scoring networks. Its explicit extraction retains signed, consecutive-layer paths to observed TFs and audits every displayed node. The NCI60 reducer cannot be used unchanged because it expects upstream seeds. It also does not repeat the NCI60 RNA coherence loop on signaling edges: no separate transcript-level regulatory layer has been added here.
 
-The ventricular example retains **44 downstream TFs**, realizes four inferred levels, and produces **605 displayed nodes and 703 edges** at the default display cutoff. Every inferred displayed node reaches an observed TF; 15 observed TFs have no surviving explanatory edge and are explicitly retained as isolated observations. Outputs include original-ID `SIF.csv`/`ATT.csv`, full scores, coverage, threshold sensitivity, plots and a run ledger in `results/moon/Ventricular_Cardiomyocyte/`. The `abs(TF)>2` and `abs(MOON)>1.5` cutoffs are heuristics, not FDR thresholds. Read [MOON.md](MOON.md) for the mapping, package setup and extraction details.
+There are two analyses, both saved with complete scores, SIF/ATT networks, coverage and audit ledgers:
+
+| Analysis | What is held constant? | Interpretation |
+| --- | --- | --- |
+| **Controlled shared-TF comparison**, the main comparison | The same 40 shared finite TFs, no activity threshold, the same observability pruning, compression, PKN and four layers. KLF2 lacks usable incoming signaling support, leaving **39 observable TFs**. | Changes reflect the supplied GRN-derived TF footprints with TF coverage and topology held fixed. |
+| Full available TFs, supplementary | Same starting PKN and `abs(TF)>2` heuristic; eligible TF identities and resulting pruned networks can differ. | A practical run with each full prior; differences combine activity estimates and coverage changes. |
+
+The controlled runs have the exact same **12,170-edge scoring PKN** across both methods and all six cell types. Each profile has 39 observed TFs and 3,368 inferred original node IDs. The script verifies identical graphs, compression mappings and scored-node levels. Only nodes inferred at the **same nonzero level in both runs** enter score differences; observed TFs, missing nodes and changed-level supplementary results remain incomparable.
+
+The original ventricular CollecTRI run is preserved under `results/moon/`; SCENIC+ full-prior results are under `results/moon_scenicplus/`. Controlled runs and joined tables are in `results/moon_comparison/`. The `abs(TF)>2` full-prior filter and `abs(MOON)>1.5` display cutoff are heuristics, not FDR thresholds; the controlled TF inputs are unthresholded. See [MOON.md](MOON.md) for setup and implementation details.
+
+### Which upstream hypotheses receive greater support?
+
+After script 03, run `python Heart_pseudobulk/04_compare_moon.py`. Start with the [controlled level-1 score and support heatmaps](results/moon_comparison/figures/01_controlled_upstream_heatmaps_level1.pdf), followed by the [four-layer comparison](results/moon_comparison/figures/02_controlled_support_by_level.pdf). Level 1 is directly supported by the observed TF footprints; subsequent layers use inferred activities from the previous level. Compare rank changes within each cell type and level, rather than pooling ranks across layers.
+
+The main support contrast is **`abs(SCENIC+ MOON score) − abs(CollecTRI MOON score)`**. Red means larger absolute alignment under SCENIC+-derived footprints; blue means CollecTRI. Signed scores and sign-flip flags are retained separately. This distinction prevents stronger inferred inhibition from being mistaken for weaker support. It is a conditional ranking of upstream hypotheses, not a probability that one GRN or regulator is correct.
+
+![Illustrative ventricular upstream differences](results/moon_comparison/figures/03_example_upstream_regulators.png)
+
+For example, in the controlled ventricular comparison:
+
+| Direct upstream hypothesis | CollecTRI MOON score | SCENIC+ MOON score | Readout |
+| --- | ---: | ---: | --- |
+| HDAC4 / HDAC5 / CCND1–CDK4 | −3.63 | −0.62 | Stronger negative alignment with CollecTRI; these three labels share the observed MEF2A− / MEF2C− footprint. |
+| NLK | −0.65 | +2.59 | Stronger magnitude with SCENIC+ and a change of inferred sign; three directly observed TF children. |
+| JUN | −0.34 | −1.89 | Stronger negative alignment with SCENIC+; three directly observed TF children. |
+
+The direct comparison contains 377 first-layer original nodes but only **138 distinct signed observed-TF footprints**. The plots show one representative per footprint and append `(+n)` for other indistinguishable original nodes; `direct_tf_footprint_groups.csv` lists all members. At later levels, plots collapse full-PKN compression aliases. These groupings prevent repeated labels from appearing as independent evidence. MOON permits a one-target footprint; the illustrative table reports direct TF-child counts, and MED1's example rests on GATA6 alone. A displayed regulator is not uniquely identified by such evidence.
+
+All original-node comparisons remain in `controlled_shared_tf_comparison.csv`; signed differences, magnitude differences and within-level rank changes are included. `figures/upstream_support_all_original_ids.csv` adds signs and support annotations. The selected example table reports scores, signed TF children and group membership. Selection emphasizes large observed differences for explanation, rather than estimating general performance.
 
 These are prior-compatible upstream hypotheses. There is no measured upstream anchor, perturbation validation or proof that an inferred regulator causes a cell-type difference.
 
 ## Verification and method references
 
-All three scripts were executed on the supplied data, including MOON for all six types. Aggregation tests preserve each gene's total exactly, verify library normalization and sample-SD scaling, and reject already logged input. The GRN checks cover opposing signs, matched degrees, signed random controls and ranking gates; native pathway counts are checked against GRETA scores. MOON checks signs, input protection and directed paths to level-0 TFs.
+The analyses and comparison plots were executed on the supplied data: 24 MOON runs cover both full priors and both controlled runs for all six cell types. Aggregation tests preserve each gene's total exactly, verify library normalization and sample-SD scaling, and reject already logged input. TF comparisons check signed prior cleaning, matched rows and delta direction. GRN checks cover opposing signs, matched degrees, signed random controls and ranking gates. MOON tests verify input protection, signed directed paths, zero-valued shared TFs, identical-input reproduction and exclusion of incomparable scores. Plot checks distinguish negative activity from support magnitude and collapse indistinguishable direct footprints.
 
 ```bash
 python -m pytest Heart_pseudobulk/tests scripts/test_tf_activity_decoupler.py

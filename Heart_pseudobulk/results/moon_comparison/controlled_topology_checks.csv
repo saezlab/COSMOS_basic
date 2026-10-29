@@ -1,0 +1,7 @@
+"cell_type","identical_input_ids","identical_scoring_pkn","identical_uncompressed_pkn","identical_compression_mapping","identical_scored_node_levels","n_shared_input_TFs","n_upstream_nodes","n_scoring_edges","scoring_pkn_md5"
+"Atrial Cardiomyocyte",TRUE,TRUE,TRUE,TRUE,TRUE,39,3368,12170,"c81a5850b49a44ecb556463c12ec150f"
+"Endothelial cell",TRUE,TRUE,TRUE,TRUE,TRUE,39,3368,12170,"c81a5850b49a44ecb556463c12ec150f"
+"Fibroblast",TRUE,TRUE,TRUE,TRUE,TRUE,39,3368,12170,"c81a5850b49a44ecb556463c12ec150f"
+"Mural cell",TRUE,TRUE,TRUE,TRUE,TRUE,39,3368,12170,"c81a5850b49a44ecb556463c12ec150f"
+"Myeloid",TRUE,TRUE,TRUE,TRUE,TRUE,39,3368,12170,"c81a5850b49a44ecb556463c12ec150f"
+"Ventricular Cardiomyocyte",TRUE,TRUE,TRUE,TRUE,TRUE,39,3368,12170,"c81a5850b49a44ecb556463c12ec150f"

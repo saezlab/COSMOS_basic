@@ -1,0 +1,86 @@
+{
+  "decoupler_version": "2.2.0",
+  "method": "ULM; t-statistic of signed target-weight coefficient, including intercept",
+  "min_targets": 20,
+  "n_regulon_edges": 34080,
+  "n_regulon_tfs": 102,
+  "background": "all non-missing RNA z-scores in each cell line, including zeros",
+  "degrees_of_freedom": "n_available_genes_in_cell_line - 2",
+  "p_values": "raw two-sided Student t p-values reconstructed from ULM scores",
+  "p_adjusted": "native decoupler BH correction across tested TFs separately within each cell line",
+  "missing_scores": "TF has fewer than min_targets available targets in that cell line",
+  "preprocessing": {
+    "n_input_genes": 4070,
+    "n_removed_missing": 0,
+    "n_retained_genes": 4070,
+    "n_zero_or_undefined_sd": 0,
+    "n_cell_lines": 6,
+    "max_missing": 0,
+    "ddof": 1,
+    "imputation": "none"
+  },
+  "observation_semantics": "pooled cell types, not individual cell lines or donor replicates",
+  "network": "SCENIC+",
+  "regulon_cleaning": {
+    "raw_rows": 35268,
+    "raw_tfs": 102,
+    "opposing_sign_pairs_excluded": 594,
+    "opposing_sign_rows_excluded": 1188,
+    "same_sign_duplicate_rows_excluded": 0,
+    "clean_edges": 34080,
+    "clean_tfs": 102,
+    "sign_conflict_policy": "exclude every row of a source-target pair with opposing type labels",
+    "same_sign_duplicate_policy": "keep strongest supplied score, then largest n_topics as tie breaker",
+    "weight": "supplied positive score multiplied by activator +1 or repressor -1; n_topics is not a weight",
+    "source_scope": "all supplied TF sources; a source's own transcript need not be measured",
+    "self_edges": "retained as supplied, consistently with CollecTRI TF activity estimation",
+    "strength_provenance": "exact statistical meaning and inference settings were not supplied"
+  },
+  "normalization": {
+    "X": "natural log1p of counts normalized to target_sum over the supplied gene subset",
+    "aggregation": "sum of provided integer counts across all cells of each cell type",
+    "groupby": "cell_type",
+    "input_assumption": "X contains counts; integer values verified, assay provenance was not supplied",
+    "input_count_total": 1110049,
+    "input_n_cells": 600,
+    "input_n_genes": 4070,
+    "normalization_background": "provided genes only; full-transcriptome library totals are unavailable",
+    "organism_tissue": "human heart inferred from source gene IDs and supplied cell annotations",
+    "replication": "one pooled profile per cell type; donor variation is not modeled",
+    "target_sum": 10000.0
+  },
+  "orientation": "genes/TFs in rows, cell lines in columns; cell_summary is cell lines in rows",
+  "packages": {
+    "decoupler": "2.2.0",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1"
+  },
+  "provenance": {
+    "pseudobulk": {
+      "filename": "heart_pseudobulk.h5ad",
+      "sha256": "6e872b123b1227897372ab89a2ff95ba062265bc5f12ac05f3af7283b65f6ff5"
+    },
+    "regulons": {
+      "filename": "scenicplus_grn.tsv",
+      "sha256": "0bf52eae619dbca3a86d8d4a405d398479cfa59a356976a0bd3cccebd0e64df2"
+    },
+    "code": {
+      "script_sha256": "43d33a76c45e87a6d519738b99bfad3ade643db90161cdfa9d4d91f48ad5efb0",
+      "helper_sha256": "9fa58873c86a5d46ef0b7f8698c0a23c3d447c5fc81a761e5664d7ac5c0aa88d"
+    },
+    "cleaned_regulons": {
+      "filename": "regulons_cleaned.tsv",
+      "sha256": "35d15353a25a156dc810752de2091cf3b2b5dbf53b4fc1eb9d29490af559ee68"
+    },
+    "reference_workflow": "scripts/prepare_cosmos_inputs.R RNA/TF logic, with count normalization before scaling"
+  },
+  "outputs": {
+    "rna_scaled": "rna_scaled.csv",
+    "tf_scores": "tf_scores.csv",
+    "tf_pvalues": "tf_pvalues.csv",
+    "tf_padj": "tf_padj.csv",
+    "tf_target_counts": "tf_target_counts.csv",
+    "cell_summary": "cell_summary.csv"
+  }
+}

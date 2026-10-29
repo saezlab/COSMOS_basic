@@ -1,0 +1,7 @@
+pseudobulk,cell_type,celltype,n_cells,n_counts_retained_genes,n_donors,n_samples
+Atrial Cardiomyocyte,Atrial Cardiomyocyte,Atrial Cardiomyocyte,100,380462,8,22
+Endothelial cell,Endothelial cell,Endothelial cell,100,98379,10,35
+Fibroblast,Fibroblast,Fibroblast,100,142553,9,36
+Mural cell,Mural cell,Mural cell,100,76549,9,31
+Myeloid,Myeloid,Myeloid,100,166647,10,33
+Ventricular Cardiomyocyte,Ventricular Cardiomyocyte,Ventricular Cardiomyocyte,100,245459,7,19

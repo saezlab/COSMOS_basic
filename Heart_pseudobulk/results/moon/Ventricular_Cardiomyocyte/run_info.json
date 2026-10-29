@@ -1,6 +1,6 @@
 {
   "cell_type": "Ventricular Cardiomyocyte",
-  "timestamp_utc": "2026-10-29 08:39:45 UTC",
+  "timestamp_utc": "2026-10-29 13:34:35 UTC",
   "cosmosR_version": "1.21.2",
   "cosmosR_commit": "b2ed195738479c4ad204cace37fd11ae2fd02bb8",
   "decoupleR_version": "2.9.7",
@@ -32,6 +32,8 @@
     "n_steps": 4,
     "n_layers": 4,
     "TF_activity_cutoff": 2,
+    "TF_selection": "native finite, PKN-covered TFs above activity cutoff",
+    "downstream_cutoff_for_level_zero": "-Inf (retain genuine observed zero scores)",
     "display_score_cutoff": 1.5,
     "thresholds_are_heuristics_not_significance": true
   },
@@ -68,7 +70,7 @@
     "n_edges": 703,
     "n_isolated_observed_TFs": 15
   },
-  "elapsed_seconds": 0.67,
+  "elapsed_seconds": 0.71,
   "outputs": ["tf_input_coverage.csv", "pkn_uncompressed.csv", "pkn_scoring.csv", "compression_mapping.csv", "moon_scores_scoring_ids.csv", "moon_scores.csv", "top_regulators.csv", "SIF.csv", "ATT.csv", "network_audit.csv", "threshold_sensitivity.csv", "compression.rds", "moon_diagnostics.pdf", "moon_diagnostics.png", "run_info.json", "sessionInfo.txt"],
   "interpretation": "Prior-knowledge-compatible upstream hypotheses; no measured upstream constraints or causal validation"
 }

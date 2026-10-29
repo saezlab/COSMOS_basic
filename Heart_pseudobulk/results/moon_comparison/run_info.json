@@ -1,0 +1,34 @@
+{
+  "primary_design": "controlled_shared_TFs",
+  "question": "Which upstream PKN regulators align more strongly with the same TF identities when their RNA footprints are estimated using SCENIC+ versus CollecTRI?",
+  "mapping": {
+    "upstream_input": null,
+    "downstream_input": "signed TF footprint ULM scores",
+    "RNA": "annotation only"
+  },
+  "shared_input_rule": "TFs finite in both methods in all supplied cell types and covered by signaling PKN; identical globally fixed identity set; no activity cutoff; real zero scores retained",
+  "n_shared_TFs_before_observability": 40,
+  "n_shared_TFs_scored": 39,
+  "shared_input_ids": ["ATF6", "BCL6", "CEBPD", "CUX1", "ELF1", "ERG", "ETS1", "ETS2", "FLI1", "FOS", "FOXO1", "FOXO3", "GATA4", "GATA6", "HES1", "HIF1A", "JUNB", "MEF2A", "MEF2C", "MITF", "NFE2L2", "NFIA", "NFIC", "NFKB1", "NR2F2", "NR3C1", "NR3C2", "NR4A1", "NRF1", "POU2F1", "PPARG", "RBPJ", "RORA", "RUNX1", "SMAD3", "SP3", "STAT3", "TCF4", "TCF7L2"],
+  "controls": {
+    "same_RNA_preprocessing": true,
+    "same_TF_input_identities": true,
+    "same_final_scoring_graph": true,
+    "same_layers": true,
+    "same_compression_mapping": true,
+    "same_scored_node_levels_verified": true,
+    "no_missing_score_imputation": true,
+    "n_layers": 4,
+    "compression_requested": true,
+    "same_graph_across_all_requested_cell_types": true
+  },
+  "signed_delta": "score_scenicplus - score_collectri; positive means more positive, not necessarily stronger alignment",
+  "magnitude_delta": "abs(score_scenicplus) - abs(score_collectri); positive means stronger alignment to SCENIC+-derived TF footprints",
+  "rank_scope": "Within cell type and scoring level, absolute-score ranks among common comparable upstream nodes; smaller rank means larger absolute score",
+  "rank_gain_scenicplus": "rank_abs_collectri - rank_abs_scenicplus; positive means higher ranking with SCENIC+",
+  "comparison_eligibility": "finite score in both runs, identical level, level>0; level-0 input TFs excluded; incomparable values remain missing",
+  "native_supplement": "All finite covered TFs with abs(activity)>tf_cutoff for each method. Coverage and final graph may differ; changed levels and observed-vs-inferred nodes are incomparable",
+  "interpretation": "Descriptive prior-knowledge alignment and sensitivity to TF regulon choice; not probabilities, statistical significance, independent validation, or proof of causal upstream activity. The two ULM footprint methods can differ in target coverage, sign calibration and t-score scale even with fixed TF identities.",
+  "files": ["controlled_shared_tf_comparison.csv", "native_full_tf_comparison.csv", "controlled_topology_checks.csv", "input_coverage.csv", "shared_tf_ids.csv"],
+  "cell_types": ["Atrial Cardiomyocyte", "Endothelial cell", "Fibroblast", "Mural cell", "Myeloid", "Ventricular Cardiomyocyte"]
+}

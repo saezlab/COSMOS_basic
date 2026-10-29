@@ -8,7 +8,7 @@ An additional [RNA-only GRN evaluation practical](GRN_comparison/README.md) uses
 
 For Python-based input preparation, the [TF activity notebook](TF_activity/01_tf_activity_decoupler.ipynb) reproduces the RNA scaling and CollecTRI/ULM activity estimation in `scripts/prepare_cosmos_inputs.R` using `decoupler`. See its [setup and interpretation guide](TF_activity/README.md).
 
-The [cardiac pseudobulk practical](Heart_pseudobulk/README.md) provides compact six-cell-type RNA data and three scripts for TF activity, SCENIC+/CollecTRI/Random comparison, and MOON with TF activities downstream and no upstream measurements.
+The [cardiac pseudobulk practical](Heart_pseudobulk/README.md) provides compact six-cell-type RNA data, paired SCENIC+/CollecTRI TF activities and difference heatmaps, a GRETA comparison with Random, and MOON upstream hypotheses with TF activities downstream and no upstream measurements. Its controlled comparison holds TF identities and the signaling PKN fixed when comparing upstream support.
 
 ## What does the main script do?
 

@@ -20,6 +20,11 @@
     "imputation": "none"
   },
   "observation_semantics": "pooled cell types, not individual cell lines or donor replicates",
+  "network": "CollecTRI",
+  "regulon_cleaning": {
+    "source_scope": "all prior TF sources; source RNA not required",
+    "weight": "supplied signed weights"
+  },
   "normalization": {
     "X": "natural log1p of counts normalized to target_sum over the supplied gene subset",
     "aggregation": "sum of provided integer counts across all cells of each cell type",
@@ -48,6 +53,14 @@
     "regulons": {
       "filename": "collectri.tsv",
       "sha256": "365cbec6f38987c98cc54d5c6ecb4be6de01258ce307dfddd3947bf32a06179f"
+    },
+    "code": {
+      "script_sha256": "43d33a76c45e87a6d519738b99bfad3ade643db90161cdfa9d4d91f48ad5efb0",
+      "helper_sha256": "9fa58873c86a5d46ef0b7f8698c0a23c3d447c5fc81a761e5664d7ac5c0aa88d"
+    },
+    "cleaned_regulons": {
+      "filename": "regulons_cleaned.tsv",
+      "sha256": "2a2ed73037e110fccd7e8a8fefb3bcef1dd1bdce8338e9692dd9c2d4115dc3ce"
     },
     "reference_workflow": "scripts/prepare_cosmos_inputs.R RNA/TF logic, with count normalization before scaling"
   },

@@ -1,0 +1,15 @@
+{
+  "raw_rows": 35268,
+  "raw_tfs": 102,
+  "opposing_sign_pairs_excluded": 594,
+  "opposing_sign_rows_excluded": 1188,
+  "same_sign_duplicate_rows_excluded": 0,
+  "clean_edges": 34080,
+  "clean_tfs": 102,
+  "sign_conflict_policy": "exclude every row of a source-target pair with opposing type labels",
+  "same_sign_duplicate_policy": "keep strongest supplied score, then largest n_topics as tie breaker",
+  "weight": "supplied positive score multiplied by activator +1 or repressor -1; n_topics is not a weight",
+  "source_scope": "all supplied TF sources; a source's own transcript need not be measured",
+  "self_edges": "retained as supplied, consistently with CollecTRI TF activity estimation",
+  "strength_provenance": "exact statistical meaning and inference settings were not supplied"
+}
